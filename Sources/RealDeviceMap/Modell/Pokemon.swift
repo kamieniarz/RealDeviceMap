@@ -56,6 +56,7 @@ class Pokemon: JSONConvertibleObject, WebHookEvent, Equatable, CustomStringConve
             "shiny": shiny as Any,
             //"username": username as Any,
             "pokestop_id": pokestopId as Any,
+            "pokestop_name": pokestopName as Any,
             "costume": costume as Any,
             "updated": updated ?? 1,
             "capture_1": capture1 as Any,
@@ -72,6 +73,7 @@ class Pokemon: JSONConvertibleObject, WebHookEvent, Equatable, CustomStringConve
         let message: [String: Any] = [
             "spawnpoint_id": spawnId?.toHexString() ?? "None",
             "pokestop_id": pokestopId ?? "None",
+            "pokestop_name": pokestopName ?? "None",
             "encounter_id": id,
             "pokemon_id": pokemonId,
             "latitude": lat,
@@ -590,7 +592,7 @@ class Pokemon: JSONConvertibleObject, WebHookEvent, Equatable, CustomStringConve
                     id, pokemon_id, lat, lon, spawn_id, expire_timestamp, atk_iv, def_iv, sta_iv, move_1, move_2, cp,
                     level, weight, size, capture_1, capture_2, capture_3, shiny, display_pokemon_id,
                     pvp_rankings_great_league, pvp_rankings_ultra_league, username, gender,
-                    form, weather, costume, pokestop_id, updated, first_seen_timestamp, changed, cell_id,
+                    form, weather, costume, pokestop_id, pokestop_name, updated, first_seen_timestamp, changed, cell_id,
                     expire_timestamp_verified, is_event
                 )
                 VALUES (
@@ -741,7 +743,7 @@ class Pokemon: JSONConvertibleObject, WebHookEvent, Equatable, CustomStringConve
             let sql = """
                 UPDATE pokemon
                 SET pokemon_id = ?, lat = ?, lon = ?, spawn_id = ?, expire_timestamp = ?, \(ivSQL) username = ?,
-                    gender = ?, form = ?, weather = ?, costume = ?, pokestop_id = ?, updated = UNIX_TIMESTAMP(),
+                    gender = ?, form = ?, weather = ?, costume = ?, pokestop_id = ?, pokestop_name = ?, updated = UNIX_TIMESTAMP(),
                     first_seen_timestamp = ?, changed = \(changedSQL), cell_id = ?, expire_timestamp_verified = ?,
                     is_event = ?
                 WHERE id = ? AND is_event = ?
@@ -914,7 +916,7 @@ class Pokemon: JSONConvertibleObject, WebHookEvent, Equatable, CustomStringConve
         let sql = """
             SELECT id, pokemon_id, lat, lon, spawn_id, expire_timestamp, atk_iv, def_iv, sta_iv, move_1, move_2,
                    gender, form, cp, level, weather, costume, weight, size, capture_1, capture_2, capture_3,
-                   display_pokemon_id, pokestop_id, updated, first_seen_timestamp, changed, cell_id,
+                   display_pokemon_id, pokestop_id, pokestop_name, updated, first_seen_timestamp, changed, cell_id,
                    expire_timestamp_verified, shiny, username, pvp_rankings_great_league, pvp_rankings_ultra_league,
                    is_event
             FROM pokemon
@@ -1038,7 +1040,7 @@ class Pokemon: JSONConvertibleObject, WebHookEvent, Equatable, CustomStringConve
         let sql = """
             SELECT id, pokemon_id, lat, lon, spawn_id, expire_timestamp, atk_iv, def_iv, sta_iv, move_1, move_2,
                    gender, form, cp, level, weather, costume, weight, size, capture_1, capture_2, capture_3,
-                   display_pokemon_id, pokestop_id, updated, first_seen_timestamp, changed, cell_id,
+                   display_pokemon_id, pokestop_id, pokestop_name, updated, first_seen_timestamp, changed, cell_id,
                    expire_timestamp_verified, shiny, username, pvp_rankings_great_league, pvp_rankings_ultra_league,
                    is_event
             FROM pokemon
